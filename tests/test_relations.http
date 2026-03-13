@@ -1,0 +1,100 @@
+@baseUrl = http://127.0.0.1:8000
+@json = application/json
+@seed = {{$timestamp}}
+
+# Run requests top-to-bottom.
+# If any request is not 200, stop and fix that one first.
+# A 422 json_invalid usually means a previous {{...response...}} variable did not resolve.
+
+### 1) Insert species #1
+# @name createSpecies1
+POST {{baseUrl}}/species/
+Content-Type: {{json}}
+
+{
+  "name": "Eurasian Blue Tit {{seed}}",
+  "scientific_name": "Cyanistes_caeruleus_{{seed}}",
+  "family": "Paridae",
+  "conservation_status": "Least Concern",
+  "wingspan_cm": 18.0
+}
+
+### 1) Insert species #2
+# @name createSpecies2
+POST {{baseUrl}}/species/
+Content-Type: {{json}}
+
+{
+  "name": "Great Cormorant {{seed}}",
+  "scientific_name": "Phalacrocorax_carbo_{{seed}}",
+  "family": "Phalacrocoracidae",
+  "conservation_status": "Least Concern",
+  "wingspan_cm": 130.0
+}
+
+### 2) Insert bird #1 linked to species #1
+# @name createBird1
+POST {{baseUrl}}/birds/
+Content-Type: {{json}}
+
+{
+  "nickname": "Azure",
+  "ring_code": "BLUETIT-{{seed}}",
+  "age": 1,
+  "species_id": {{createSpecies1.response.body.$.id}}
+}
+
+### 2) Insert bird #2 linked to species #2
+# @name createBird2
+POST {{baseUrl}}/birds/
+Content-Type: {{json}}
+
+{
+  "nickname": "Harbor",
+  "ring_code": "CORM-{{seed}}",
+  "age": 3,
+  "species_id": {{createSpecies2.response.body.$.id}}
+}
+
+### 3) Insert birdspotting #1 linked to bird #1
+# @name createSpot1
+POST {{baseUrl}}/birdspotting/
+Content-Type: {{json}}
+
+{
+  "bird_id": {{createBird1.response.body.$.id}},
+  "spotted_at": "2026-03-13T09:00:00",
+  "location": "City Garden",
+  "observer_name": "Pawel",
+  "notes": "Perched on oak branch"
+}
+
+### 3) Insert birdspotting #2 linked to bird #1
+POST {{baseUrl}}/birdspotting/
+Content-Type: {{json}}
+
+{
+  "bird_id": {{createBird1.response.body.$.id}},
+  "spotted_at": "2026-03-13T09:30:00",
+  "location": "City Garden",
+  "observer_name": "Pawel",
+  "notes": "Feeding near feeder"
+}
+
+### 3) Insert birdspotting #3 linked to bird #2
+POST {{baseUrl}}/birdspotting/
+Content-Type: {{json}}
+
+{
+  "bird_id": {{createBird2.response.body.$.id}},
+  "spotted_at": "2026-03-13T10:15:00",
+  "location": "River Pier",
+  "observer_name": "Pawel",
+  "notes": "Diving for fish"
+}
+
+### 4) Verify relations: birdspotting includes linked bird
+GET {{baseUrl}}/birdspotting/
+
+### 4) Verify relations: get one birdspotting with linked bird
+GET {{baseUrl}}/birdspotting/{{createSpot1.response.body.$.id}}

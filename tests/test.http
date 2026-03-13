@@ -1,0 +1,52 @@
+@baseUrl = http://127.0.0.1:8000
+@json = application/json
+
+### Health check
+GET {{baseUrl}}/
+
+### Species - list
+GET {{baseUrl}}/species/
+
+### Species - create
+POST {{baseUrl}}/species/
+Content-Type: {{json}}
+
+{
+  "name": "Common Swift",
+  "scientific_name": "Apus apus",
+  "family": "Apodidae",
+  "conservation_status": "Least Concern",
+  "wingspan_cm": 42.5
+}
+
+### Birds - list
+GET {{baseUrl}}/birds/
+
+### Birds - create
+POST {{baseUrl}}/birds/
+Content-Type: {{json}}
+
+{
+  "nickname": "Skye",
+  "ring_code": "SWIFT-001",
+  "age": 2,
+  "species_id": 1
+}
+
+### Birdspotting - list
+GET {{baseUrl}}/birdspotting/
+
+### Birdspotting - get one
+GET {{baseUrl}}/birdspotting/1
+
+### Birdspotting - create
+POST {{baseUrl}}/birdspotting/
+Content-Type: {{json}}
+
+{
+  "bird_id": 1,
+  "spotted_at": "2026-03-13T10:00:00",
+  "location": "City Park",
+  "observer_name": "Pawel",
+  "notes": "Testing from test.http"
+}
