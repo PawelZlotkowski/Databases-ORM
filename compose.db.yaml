@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    restart: always
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: POSTGRESS_USER
+      POSTGRES_PASSWORD: POSTGRES_PASSWORD
+      POSTGRES_DB: POSTGRES_DB
+    volumes:
+      - db:/var/lib/postgresql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  db:
