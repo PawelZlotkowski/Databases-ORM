@@ -1,0 +1,7 @@
+{
+    "name": "test_bird",
+    "scientific_name": "Aves testus",
+    "family": "Testidae",
+    "conservation_status": "Least Concern",
+    "wingspan_cm": 120
+}
