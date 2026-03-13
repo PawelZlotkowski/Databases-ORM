@@ -19,8 +19,32 @@ Content-Type: {{json}}
   "wingspan_cm": 42.5
 }
 
+### Species - filter by conservation status
+GET {{baseUrl}}/species/?conservation_status=Least Concern
+
+### Species - get one
+GET {{baseUrl}}/species/1
+
+### Species - get with birds (back-reference)
+GET {{baseUrl}}/species/1/with-birds
+
+### Species - update
+PUT {{baseUrl}}/species/1
+Content-Type: {{json}}
+
+{
+  "name": "Common Swift Updated",
+  "wingspan_cm": 43.0
+}
+
 ### Birds - list
 GET {{baseUrl}}/birds/
+
+### Birds - list with pagination
+GET {{baseUrl}}/birds/?skip=0&limit=1
+
+### Birds - filter by species
+GET {{baseUrl}}/birds/?species_id=1
 
 ### Birds - create
 POST {{baseUrl}}/birds/
@@ -33,8 +57,37 @@ Content-Type: {{json}}
   "species_id": 1
 }
 
+### Birds - create with negative age (should fail)
+POST {{baseUrl}}/birds/
+Content-Type: {{json}}
+
+{
+  "nickname": "Invalid",
+  "ring_code": "INVALID-001",
+  "age": -1,
+  "species_id": 1
+}
+
+### Birds - get one
+GET {{baseUrl}}/birds/1
+
+### Birds - update
+PUT {{baseUrl}}/birds/1
+Content-Type: {{json}}
+
+{
+  "nickname": "Skye Updated",
+  "age": 3
+}
+
+### Birds - delete
+DELETE {{baseUrl}}/birds/1
+
 ### Birdspotting - list
 GET {{baseUrl}}/birdspotting/
+
+### Birdspotting - filter by observer
+GET {{baseUrl}}/birdspotting/?observer_name=Pawel
 
 ### Birdspotting - get one
 GET {{baseUrl}}/birdspotting/1
@@ -50,3 +103,18 @@ Content-Type: {{json}}
   "observer_name": "Pawel",
   "notes": "Testing from test.http"
 }
+
+### Birdspotting - update
+PUT {{baseUrl}}/birdspotting/1
+Content-Type: {{json}}
+
+{
+  "location": "City Park Updated",
+  "notes": "Updated notes"
+}
+
+### Birdspotting - delete
+DELETE {{baseUrl}}/birdspotting/1
+
+### Species - delete
+DELETE {{baseUrl}}/species/1

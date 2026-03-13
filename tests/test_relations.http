@@ -98,3 +98,61 @@ GET {{baseUrl}}/birdspotting/
 
 ### 4) Verify relations: get one birdspotting with linked bird
 GET {{baseUrl}}/birdspotting/{{createSpot1.response.body.$.id}}
+
+### 5) Test filtering: species by conservation status
+GET {{baseUrl}}/species/?conservation_status=Least Concern
+
+### 6) Test filtering: birds by species
+GET {{baseUrl}}/birds/?species_id={{createSpecies1.response.body.$.id}}
+
+### 7) Test filtering: birdspotting by observer
+GET {{baseUrl}}/birdspotting/?observer_name=Pawel
+
+### 8) Test back-reference: species with birds
+GET {{baseUrl}}/species/{{createSpecies1.response.body.$.id}}/with-birds
+
+### 9) Test pagination: birds with limit
+GET {{baseUrl}}/birds/?skip=0&limit=1
+
+### 10) Test update: update bird
+PUT {{baseUrl}}/birds/{{createBird1.response.body.$.id}}
+Content-Type: {{json}}
+
+{
+  "nickname": "Azure Updated",
+  "age": 2
+}
+
+### 11) Test update: update species
+PUT {{baseUrl}}/species/{{createSpecies1.response.body.$.id}}
+Content-Type: {{json}}
+
+{
+  "name": "Eurasian Blue Tit Updated {{seed}}"
+}
+
+### 12) Test update: update birdspotting
+PUT {{baseUrl}}/birdspotting/{{createSpot1.response.body.$.id}}
+Content-Type: {{json}}
+
+{
+  "notes": "Updated observation notes"
+}
+
+### 13) Test validation: try to create bird with negative age (should fail)
+POST {{baseUrl}}/birds/
+Content-Type: {{json}}
+
+{
+  "nickname": "Invalid",
+  "ring_code": "INVALID-{{seed}}",
+  "age": -5,
+  "species_id": {{createSpecies1.response.body.$.id}}
+}
+
+### 14) Cleanup: delete resources
+DELETE {{baseUrl}}/birdspotting/{{createSpot1.response.body.$.id}}
+DELETE {{baseUrl}}/birds/{{createBird1.response.body.$.id}}
+DELETE {{baseUrl}}/birds/{{createBird2.response.body.$.id}}
+DELETE {{baseUrl}}/species/{{createSpecies1.response.body.$.id}}
+DELETE {{baseUrl}}/species/{{createSpecies2.response.body.$.id}}

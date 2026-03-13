@@ -18,3 +18,10 @@ class Species(SpeciesBase, table=True):
 
 class SpeciesCreate(SpeciesBase):
     pass
+
+class SpeciesUpdate(SQLModel):
+    name: Optional[str] = None
+    scientific_name: Optional[str] = None
+    family: Optional[str] = None
+    conservation_status: Optional[str] = None
+    wingspan_cm: Optional[Decimal] = None

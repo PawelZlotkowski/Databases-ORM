@@ -20,6 +20,13 @@ class BirdSpotting(BirdSpottingBase, table=True):
 class BirdSpottingCreate(BirdSpottingBase):
     pass
 
+class BirdSpottingUpdate(SQLModel):
+    bird_id: Optional[int] = None
+    spotted_at: Optional[datetime] = None
+    location: Optional[str] = None
+    observer_name: Optional[str] = None
+    notes: Optional[str] = None
+
 
 class BirdInBirdSpottingResponse(BirdBase):
     id: int
